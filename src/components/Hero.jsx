@@ -1,82 +1,79 @@
-import { motion } from "framer-motion";
-import profile from "../assets/profile.jpg";
+import { useState } from "react";
+import SystemDiagram from "./SystemDiagram";
+import { heroDiagram } from "../data/diagrams";
+import { identity } from "../data/content";
+
+const CHIPS = [
+    { value: "858", text: "offline tests, run in CI on every change", href: "/work/oasis/#validation" },
+    { value: "Rules first", text: "the LLM only fills fields rules leave empty", href: "/work/oasis/#decisions" },
+    { value: "Human-approved", text: "config fixes: the system drafts them, a person approves each one", href: "/work/oasis/#decisions" },
+];
+
+// Entrance is CSS-only so the prerendered hero paints before any JavaScript runs.
+const rise = (delay) => ({ "data-rise": "", style: { "--rise-delay": `${delay}s` } });
 
 function Hero() {
+    const [traceKey, setTraceKey] = useState(0);
+
     return (
-        <section className="hero">
-            <div className="section-inner">
-                <motion.div
-                    style={{ display: "contents" }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.9, ease: "easeOut" }}
-                >
-                    {/* LEFT — Photo + Identity */}
-                    <motion.div
-                        className="hero-left"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.75, ease: "easeOut", delay: 0.1 }}
-                    >
-                        <div className="hero-image">
-                            <img src={profile} alt="Deeptanshu Banik" />
-                        </div>
-                        <div>
-                            <p className="hero-name">Deeptanshu (Deep) Banik</p>
-                            <p className="hero-name-role">
-                                Computer Science Engineering <br />
-                                Specializing in AI &amp; Robotics
-                            </p>
-                        </div>
-                    </motion.div>
+        <section className="hero" id="top" aria-labelledby="hero-title">
+            <div className="hero-grid shell">
+                <div className="hero-copy">
+                    <p className="eyebrow" {...rise(0)}>
+                        {identity.name} · Agentic AI · Automation · Orchestration
+                    </p>
+                    <h1 id="hero-title" className="hero-title" {...rise(0.05)}>
+                        I build AI workflows that hold up <em>after the demo.</em>
+                    </h1>
+                    <p className="hero-lede" {...rise(0.1)}>
+                        {identity.lede}
+                    </p>
+                    <dl className="hero-meta" {...rise(0.15)}>
+                        {identity.meta.map((item) => (
+                            <div key={item.label}>
+                                <dt>{item.label}</dt>
+                                <dd>{item.value}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                    <div className="hero-actions" {...rise(0.2)}>
+                        <a className="btn btn--primary" href="#work">
+                            See the work
+                        </a>
+                        <a className="btn" href="/work/oasis/">
+                            OASIS case study
+                        </a>
+                        <a className="btn btn--quiet" href={`mailto:${identity.email}`}>
+                            {identity.email}
+                        </a>
+                    </div>
+                </div>
 
-                    {/* RIGHT — Content */}
-                    <motion.div
-                        className="hero-right"
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                    >
-                        <p className="section-label">Business Analytics · Machine Learning</p>
+                <div className="hero-figure panel" {...rise(0.15)}>
+                    <div className="panel-bar">
+                        <span className="panel-title">Fig. 1: How OASIS turns a page into a trusted record</span>
+                        <button className="trace-btn" onClick={() => setTraceKey((k) => k + 1)}>
+                            Trace the flow
+                        </button>
+                    </div>
+                    <SystemDiagram diagram={heroDiagram} trace traceKey={traceKey} listOnMobile={false} />
+                </div>
+            </div>
 
-                        <h1 className="hero-headline">
-                            Numbers tell stories.{" "}
-                            <span className="hero-headline-muted">
-                                I make sure those stories drive decisions.
-                            </span>
-                        </h1>
-
-                        <p className="hero-body">
-                            Focused on the space between data and decisions — extracting what
-                            the numbers reveal, and determining what should happen next because
-                            of them. Working in Python, SQL, and machine learning to build
-                            analytical systems with measurable business impact.
-                        </p>
-
-                        <div className="hero-rule" />
-
-                        <p className="hero-meta-label">Contact</p>
-
-                        <div className="hero-contact">
-                            <a href="mailto:deepbanik0506@gmail.com">deepbanik0506@gmail.com</a>
-                            <span>+91 99013 33662</span>
-                        </div>
-
-                        <div className="hero-actions">
-                            <a href="#projects" className="hero-btn-primary">
-                                View Case Studies ↓
+            <div className="shell">
+                <ul className="evidence-chips" aria-label="Evidence">
+                    {CHIPS.map((c) => (
+                        <li key={c.value}>
+                            <a href={c.href}>
+                                <strong>{c.value}</strong>
+                                <span>{c.text}</span>
+                                <span className="chip-arrow" aria-hidden="true">
+                                    →
+                                </span>
                             </a>
-                            <a
-                                href="https://github.com/deepbanik0506-bit"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hero-btn-ghost"
-                            >
-                                GitHub ↗
-                            </a>
-                        </div>
-                    </motion.div>
-                </motion.div>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </section>
     );

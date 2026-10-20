@@ -1,32 +1,20 @@
-import Navbar from "./components/Navbar";
+import Shell from "./components/Shell";
 import Hero from "./components/Hero";
-import About from "./components/About";
-import Projects from "./components/Projects";
-import CustomCursor from "./components/CustomCursor";
-import { useEffect, useState } from "react";
-import Loader from "./components/Loader";
+import Principles from "./components/Principles";
+import Work from "./components/Work";
+import CapabilityMap from "./components/CapabilityMap";
+import Experience from "./components/Experience";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-useEffect(() => {
-    const timer = setTimeout(() => {
-        setLoading(false);
-    }, 4200);
-
-    return () => clearTimeout(timer);
-}, []);
-  return (
-    <>
-        {loading && <Loader />}
-
-        <CustomCursor />
-        <Navbar />
-        <Hero />
-        <About />
-        <Projects />
-    </>
-);
+    return (
+        <Shell home>
+            <Hero />
+            <Principles />
+            <Work />
+            <CapabilityMap />
+            <Experience />
+        </Shell>
+    );
 }
 
 export default App;

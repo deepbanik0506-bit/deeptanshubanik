@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local-only: working notes and unpublished drafts
+REDESIGN_NOTES.md
+drafts/

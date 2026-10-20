@@ -1,145 +1,176 @@
+// Single source of truth for every project shown on the site.
+//
+// Evidence rules (see REDESIGN_NOTES.md):
+//   kind "engineering" — a property of the codebase, counted from the repo
+//   kind "observed"    — recorded by the system while actually running
+//   kind "dataset"     — derived from a public or synthetic dataset, not a business outcome
+// Every finding carries `basis` (denominator or conditions). Public-repo
+// findings also carry `source`; private-repo sources are recorded only in
+// REDESIGN_NOTES.md so internal paths never ship in the bundle.
+
+export const EVIDENCE_LABELS = {
+    engineering: "Codebase",
+    observed: "Observed in use",
+    dataset: "Dataset finding",
+};
+
 const projects = [
     {
-        title: "E-Commerce Profit Optimization Engine",
-
-        category: "Business Analytics",
-
-        stack: [
-            "Python",
-            "Pandas",
-            "SQL",
-            "SQLite",
-            "Tableau",
-            "Matplotlib",
-            "Seaborn"
+        slug: "oasis",
+        title: "OASIS",
+        subtitle: "University intelligence engine",
+        status: "In development",
+        statusTone: "live",
+        data: "Public university web pages",
+        role: "Designed and built",
+        period: "2026 — ongoing",
+        context: "Building Nuvakin",
+        stack: ["Python", "FastAPI", "Ollama (local LLM)", "Playwright fallback", "unittest", "GitHub Actions"],
+        summary:
+            "A pipeline that turns inconsistent official university course pages into structured, validated records, plus an explainable recommendation engine on top. Deterministic parsers do the work; a local LLM may only fill fields they left empty.",
+        findings: [
+            {
+                value: "858",
+                label: "offline regression tests across 46 files, run in CI",
+                kind: "engineering",
+                basis: "Test methods at the latest commit; last CI run passed 17 Aug 2026",
+            },
+            {
+                value: "5",
+                label: "isolated layers, with isolation enforced by static import tests",
+                kind: "engineering",
+                basis: "ingestion · recommendation · API · document intake · dashboard",
+            },
+            {
+                value: "4 / 50",
+                label: "universities live; none of the 46 candidates has passed the promotion gate yet",
+                kind: "observed",
+                basis: "Registry status at the latest commit (4 active, 46 candidate)",
+            },
         ],
-
-        metrics: [
-            "~20% Revenue from Loss-Making Transactions",
-            "Profitability Breakeven at 20–30% Discounts",
-            "~25% Simulated Profit Improvement Potential"
-        ],
-
-        insight:
-            "High-revenue products with deep discounts create the illusion of growth while actively eroding margins.",
-
-        image: "local",
-
-        imageAlt: "E-Commerce Profit Optimization Dashboard",
-
-        github:
-            "https://github.com/deepbanik0506-bit/ecommerce-profit-optimizer",
-
-        featured: true,
-
-        description:
-            "Conducted an end-to-end profitability analysis using SQL, Python, and Tableau to identify discount-driven losses, weak-margin categories, and high-revenue loss-making products."
+        repo: { public: false },
+        caseStudy: "/work/oasis/",
     },
-
     {
-        title: "Discount-Profit Sensitivity Analyzer",
-
-        category: "Business Analytics",
-
-        stack: [
-            "Python",
-            "Pandas",
-            "Matplotlib",
-            "Seaborn"
+        slug: "discount-profitability",
+        title: "Discount & Profitability Study",
+        subtitle: "Where discounting stops paying for itself",
+        status: "Study",
+        statusTone: "study",
+        data: "Public dataset: Sample Superstore (US retail)",
+        role: "Solo analysis",
+        period: "May 2026",
+        stack: ["Python", "Pandas", "SQL (SQLite)", "Tableau", "Seaborn"],
+        summary:
+            "Two earlier analyses merged into one: SQL and pandas work on a public retail dataset to find the discount level at which orders stop making money, and which categories carry the losses.",
+        findings: [
+            {
+                value: "20% → 30%",
+                label: "average order profit is positive at 20% discount and negative from 30%",
+                kind: "dataset",
+                basis: "Mean profit per order line by discount level: +24.7 at 20%, −45.7 at 30%",
+                source: "discount-profit-sensitivity-analyzer/notebooks/discount_analysis.ipynb (cell 2)",
+            },
+            {
+                value: "≈20%",
+                label: "of revenue came from loss-making order lines",
+                kind: "dataset",
+                basis: "Share of total sales where line profit < 0 (19.86% in the Tableau dashboard)",
+                source: "ecommerce-profit-optimizer/reports/dashboard.png; notebooks/eda.ipynb (cell 16)",
+            },
+            {
+                value: "Furniture",
+                label: "weakest category margin; average margin turns negative at 30% discount",
+                kind: "dataset",
+                basis: "Furniture mean margin +7.2% at 20% discount, −12.1% at 30%",
+                source: "discount_analysis.ipynb (cell 6)",
+            },
         ],
-
-        metrics: [
-            "~30% Overall Discount Breakeven Threshold",
-            "Tables Become Unprofitable at ~20% Discount",
-            "~30% Median Discount Applied to Tables"
-        ],
-
-        insight:
-            "Blanket discounting is destroying Furniture margins, with Tables emerging as the single largest loss driver.",
-
-        image:
-            "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e",
-
-        imageAlt: "Discount Profit Margin Analysis",
-
-        github:
-            "https://github.com/deepbanik0506-bit/discount-profit-sensitivity-analyzer",
-
-        featured: true,
-
-        description:
-            "Analyzed retail discount sensitivity to uncover profitability thresholds, category-level margin deterioration, and high-risk pricing behavior."
+        repo: {
+            public: true,
+            url: "https://github.com/deepbanik0506-bit/ecommerce-profit-optimizer",
+            secondary: "https://github.com/deepbanik0506-bit/discount-profit-sensitivity-analyzer",
+        },
+        caseStudy: "/work/discount-profitability/",
     },
-
     {
-        title: "Customer Churn Prediction",
-
-        category: "Machine Learning / Business Analytics",
-
-        stack: [
-            "Python",
-            "Pandas",
-            "Scikit-learn"
+        slug: "churn",
+        title: "Churn Modelling on Synthetic Data",
+        subtitle: "Choosing a threshold, not just a model",
+        status: "Study",
+        statusTone: "study",
+        data: "Synthetic dataset: 100,000 generated telecom customers",
+        role: "Solo analysis",
+        period: "May 2026",
+        stack: ["Python", "Pandas", "scikit-learn"],
+        summary:
+            "A class-balanced logistic regression on a synthetic churn dataset, used to explore the trade-off between catching churners and raising false alarms.",
+        findings: [
+            {
+                value: "70% → 82%",
+                label: "recall when the decision threshold drops from 0.5 to 0.4",
+                kind: "dataset",
+                basis: "20% stratified hold-out (20,000 rows); precision falls from 52% to 48%",
+                source: "customer-churn-prediction/notebook.ipynb (cells 6–7)",
+            },
+            {
+                value: "0.77",
+                label: "ROC AUC at the default threshold (accuracy 68.8%)",
+                kind: "dataset",
+                basis: "Same hold-out; 33% of rows are churners",
+                source: "notebook.ipynb (cells 2, 6)",
+            },
+            {
+                value: "Contract",
+                label: "type dominates the model; month-to-month carries the highest risk",
+                kind: "dataset",
+                basis: "Largest coefficients: one-year −1.72, two-year −1.71 vs month-to-month",
+                source: "notebook.ipynb (cell 8)",
+            },
         ],
-
-        metrics: [
-            "~69% Accuracy",
-            "~70% Recall at Threshold 0.5",
-            "~82% Recall at Threshold 0.4"
-        ],
-
-        insight:
-            "Month-to-month subscribers represent the highest churn-risk segment and should be prioritized for retention efforts.",
-
-        image:
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
-
-        imageAlt: "Customer Churn Project",
-
-        github:
-            "https://github.com/deepbanik0506-bit/customer-churn-prediction",
-
-        featured: true,
-
-        description:
-            "Built a churn prediction model to identify high-risk customers and uncover the behavioral drivers most associated with customer attrition."
+        repo: { public: true, url: "https://github.com/deepbanik0506-bit/customer-churn-prediction" },
+        caseStudy: "/work/churn/",
     },
-
     {
-        title: "Credit Card Customer Segmentation",
-
-        category: "Machine Learning / Business Analytics",
-
-        stack: [
-            "Python",
-            "Pandas",
-            "Scikit-learn",
-            "PCA",
-            "K-Means"
+        slug: "segmentation",
+        title: "Credit-Card Customer Segmentation",
+        subtitle: "Honest clusters from weak structure",
+        status: "Study",
+        statusTone: "study",
+        data: "Public dataset: Credit Card Dataset for Clustering",
+        role: "Solo analysis",
+        period: "May 2026",
+        stack: ["Python", "Pandas", "scikit-learn", "K-Means", "PCA"],
+        summary:
+            "K-Means on 17 standardised behavioural features, with the number of clusters chosen by silhouette score and the result read cautiously.",
+        findings: [
+            {
+                value: "K = 3",
+                label: "the best silhouette of K = 2–10, at 0.247",
+                kind: "dataset",
+                basis: "Silhouette on all 17 standardised features; a modest score, so segments overlap",
+                source: "credit-card-customer-segmentation/segmentation.ipynb (cells 6–7)",
+            },
+            {
+                value: "8,636",
+                label: "customers clustered after dropping rows with missing values",
+                kind: "dataset",
+                basis: "8,950 rows in the raw file; 314 removed",
+                source: "segmentation.ipynb (cells 2–3)",
+            },
+            {
+                value: "68 / 18 / 14",
+                label: "% split: moderate users · cash-advance heavy · high spenders",
+                kind: "dataset",
+                basis: "Cluster shares and mean-feature profiles",
+                source: "segmentation.ipynb (cells 8, 10)",
+            },
         ],
-
-        metrics: [
-            "Silhouette Score Improved 0.28 → 0.37",
-            "K = 2 Customer Clusters",
-            "~8,950 Customers Analyzed"
-        ],
-
-        insight:
-            "Customers split into high-intensity spenders and low-engagement users, requiring differentiated engagement strategies.",
-
-        image:
-            "https://images.unsplash.com/photo-1509228468518-180dd4864904",
-
-        imageAlt: "Customer Segmentation Clustering",
-
-        github:
-            "https://github.com/deepbanik0506-bit/credit-card-segmentation",
-
-        featured: false,
-
-        description:
-            "Applied PCA and K-Means clustering to identify distinct customer behavior segments for targeted marketing and retention strategies."
-    }
+        repo: { public: true, url: "https://github.com/deepbanik0506-bit/credit-card-customer-segmentation" },
+        caseStudy: "/work/segmentation/",
+    },
 ];
 
 export default projects;
+
+export const getProject = (slug) => projects.find((p) => p.slug === slug);
