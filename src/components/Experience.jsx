@@ -1,7 +1,7 @@
 import Reveal from "./Reveal";
 import { SectionHead } from "./Tags";
-import { experience, interests } from "../data/content";
-import portrait from "../assets/profile-480.webp";
+import { experience } from "../data/content";
+import portrait from "../assets/profile-campus-480.webp";
 
 function Experience() {
     return (
@@ -12,8 +12,7 @@ function Experience() {
                     <figure className="portrait">
                         <img src={portrait} alt="Portrait of Deeptanshu Banik" width="480" height="661" loading="lazy" decoding="async" />
                         <figcaption>
-                            Deep. Drawn to how systems behave, seen through {interests.slice(0, -1).join(", ")} and{" "}
-                            {interests.at(-1)}.
+                            Curious. Experimental. Always building.
                         </figcaption>
                     </figure>
                 </div>
