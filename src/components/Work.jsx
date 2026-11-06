@@ -1,14 +1,15 @@
 import { useState } from "react";
 import Reveal from "./Reveal";
 import SystemDiagram from "./SystemDiagram";
-import { ShareChart, ThresholdChart } from "./Charts";
+import { PriceChart, ShareChart, ThresholdChart } from "./Charts";
 import { EvidenceTag, SectionHead, StatusTag } from "./Tags";
-import projects, { getProject } from "../data/projects";
+import projects, { getProject, linkedProjects } from "../data/projects";
 import { oasisDiagram } from "../data/diagrams";
 
 const VISUALS = {
     churn: () => <ThresholdChart compact />,
     segmentation: () => <ShareChart compact />,
+    "finance-decision-council": () => <PriceChart />,
 };
 
 export function Findings({ findings }) {
@@ -77,27 +78,43 @@ function BenchCard({ p, index }) {
         <Reveal as="article" className="bench-card panel" delay={(index % 2) * 0.06} aria-labelledby={`card-${p.slug}`}>
             <p className="card-meta">
                 <StatusTag status={p.status} tone={p.statusTone} />
-                <span>{p.period}</span>
+                {p.period && <span>{p.period}</span>}
             </p>
             <h3 id={`card-${p.slug}`} className="bench-title">
-                <a href={p.caseStudy}>{p.title}</a>
+                {p.caseStudy ? <a href={p.caseStudy}>{p.title}</a> : p.title}
             </h3>
             <p className="bench-subtitle">{p.subtitle}</p>
-            <p className="data-line">
-                <span className="data-line-label">Data</span> {p.data}
-            </p>
-            <p className="bench-summary">{p.summary}</p>
+            {p.data && (
+                <p className="data-line">
+                    <span className="data-line-label">Data</span> {p.data}
+                </p>
+            )}
+            {p.summary && <p className="bench-summary">{p.summary}</p>}
             {visual && (
                 <div className="bench-visual" aria-hidden="true">
                     {visual}
                 </div>
             )}
-            <Findings findings={p.findings} />
+            {p.points && (
+                <ul className="timeline-points bench-points">
+                    {p.points.map((pt) => (
+                        <li key={pt}>{pt}</li>
+                    ))}
+                </ul>
+            )}
+            {p.findings && <Findings findings={p.findings} />}
             <p className="stack">{p.stack.join(" · ")}</p>
             <div className="card-links">
-                <a className="text-link" href={p.caseStudy}>
-                    Case study <span aria-hidden="true">→</span>
-                </a>
+                {p.caseStudy && (
+                    <a className="text-link" href={p.caseStudy}>
+                        Case study <span aria-hidden="true">→</span>
+                    </a>
+                )}
+                {p.demo && (
+                    <a className="text-link" href={p.demo} target="_blank" rel="noopener noreferrer">
+                        Live demo<span className="sr-only"> (opens in a new tab)</span> <span aria-hidden="true">↗</span>
+                    </a>
+                )}
                 {p.repo.public ? (
                     <a className="text-link" href={p.repo.url} target="_blank" rel="noopener noreferrer">
                         Repository<span className="sr-only"> (opens in a new tab)</span> <span aria-hidden="true">↗</span>
@@ -111,7 +128,7 @@ function BenchCard({ p, index }) {
 }
 
 function Work() {
-    const bench = projects.filter((p) => p.slug !== "oasis");
+    const bench = [...linkedProjects, ...projects.filter((p) => p.slug !== "oasis")];
     return (
         <section className="section" id="work" aria-labelledby="work-title">
             <div className="shell">

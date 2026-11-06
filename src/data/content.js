@@ -137,4 +137,12 @@ export const experience = [
     },
 ];
 
+export const certifications = [
+    {
+        name: "AI Fluency: Framework & Foundations",
+        issuer: "Anthropic",
+        issued: "September 2026",
+    },
+];
+
 export const interests = ["physics", "psychology", "mathematics", "AI orchestration"];

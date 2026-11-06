@@ -172,3 +172,36 @@ export function ShareChart({ compact = false }) {
         </figure>
     );
 }
+
+// Decorative price line for the Finance Decision Council card. The series is
+// illustrative, not market data, so it carries no axis values.
+const PRICE_PATH = [
+    42, 44, 43, 46, 45, 48, 47, 50, 49, 52, 51, 49, 47, 48, 46, 44, 45, 47, 50, 53,
+    52, 55, 57, 56, 59, 58, 61, 60, 57, 58, 62, 64, 63, 66, 65, 68, 70, 69, 72, 74,
+];
+
+export function PriceChart() {
+    const W = 420, H = 150, T = 22, B = 10;
+    const min = Math.min(...PRICE_PATH) - 4, max = Math.max(...PRICE_PATH) + 2;
+    const x = (i) => (i / (PRICE_PATH.length - 1)) * W;
+    const y = (v) => T + ((max - v) / (max - min)) * (H - T - B);
+    const line = PRICE_PATH.map((v, i) => `${i ? "L" : "M"} ${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+    const last = PRICE_PATH.length - 1;
+    return (
+        <figure className="chart chart--compact">
+            <svg viewBox={`0 0 ${W} ${H}`}>
+                {[0.25, 0.5, 0.75].map((f) => (
+                    <g key={f} className="chart-grid">
+                        <line x1="0" x2={W} y1={T + f * (H - T - B)} y2={T + f * (H - T - B)} />
+                    </g>
+                ))}
+                <text className="chart-axis" x="0" y="12">
+                    Illustrative price history
+                </text>
+                <path className="price-area" d={`${line} L ${W} ${H - B} L 0 ${H - B} Z`} />
+                <path className="price-line" d={line} vectorEffect="non-scaling-stroke" />
+                <circle className="price-dot" cx={x(last) - 3} cy={y(PRICE_PATH[last])} r="3" />
+            </svg>
+        </figure>
+    );
+}

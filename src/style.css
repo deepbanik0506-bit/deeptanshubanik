@@ -1407,6 +1407,12 @@ main:focus {
     flex: 1;
 }
 
+.bench-card .bench-points {
+    flex: 1;
+    align-content: start;
+    margin: 0;
+}
+
 .stack {
     margin-top: 16px;
     font-family: var(--font-mono);
@@ -1494,6 +1500,22 @@ main:focus {
 
 .chart-hit {
     fill: transparent;
+}
+
+.price-line {
+    fill: none;
+    stroke: var(--series-1);
+    stroke-width: 1.75;
+    stroke-linejoin: round;
+}
+
+.price-area {
+    fill: var(--series-1);
+    opacity: 0.12;
+}
+
+.price-dot {
+    fill: var(--series-1);
 }
 
 .bar {
@@ -1782,6 +1804,14 @@ main:focus {
     position: absolute;
     left: 0;
     color: var(--ink-3);
+}
+
+.cert-heading {
+    margin: 12px 0 22px;
+}
+
+.cert-heading + .timeline .timeline-item:last-child {
+    padding-bottom: 0;
 }
 
 /* ===== FOOTER ===== */

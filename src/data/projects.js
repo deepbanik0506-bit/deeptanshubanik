@@ -173,4 +173,25 @@ const projects = [
 
 export default projects;
 
+// Projects documented by a live demo and public repository rather than a case study.
+// They appear on the bench only: no /work/ page, no capability-map row, no evidence findings.
+export const linkedProjects = [
+    {
+        slug: "finance-decision-council",
+        title: "Finance Decision Council",
+        subtitle: "Multi-Agent AI Financial Analysis System",
+        status: "Deployed",
+        statusTone: "live",
+        stack: ["Python", "LangGraph", "FastAPI", "React", "Groq", "yfinance", "Pydantic"],
+        points: [
+            "Built and deployed a multi-agent financial analysis system using LangGraph, orchestrating valuation, risk, and momentum agents through parallel execution and deterministic synthesis.",
+            "Developed evidence-grounded agent outputs with structured validation, explicit disagreement reporting, evidence-gap detection, and failure handling.",
+            "Engineered a full-stack application with FastAPI backend and React frontend, integrating financial market data, interactive analysis dashboards, historical price visualizations, and JSON export.",
+            "Implemented analytical safeguards distinguishing insufficient evidence, directional signals, execution reliability, and heuristic confidence from investment advice.",
+        ],
+        demo: "https://finance-decision-council.vercel.app",
+        repo: { public: true, url: "https://github.com/deepbanik0506-bit/finance-decision-council" },
+    },
+];
+
 export const getProject = (slug) => projects.find((p) => p.slug === slug);
