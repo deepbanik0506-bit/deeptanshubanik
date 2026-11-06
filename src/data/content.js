@@ -139,6 +139,11 @@ export const experience = [
 
 export const certifications = [
     {
+        name: "Certificate of Completion: AI Fluency for Small Businesses",
+        issuer: "Anthropic",
+        issued: "November 2026",
+    },
+    {
         name: "AI Fluency: Framework & Foundations",
         issuer: "Anthropic",
         issued: "September 2026",
