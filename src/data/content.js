@@ -62,13 +62,13 @@ export const capabilities = [
         id: "orchestration",
         label: "LLM orchestration inside deterministic systems",
         detail: "Models confined to the narrow jobs rules can't do, with output that can never overwrite known facts.",
-        projects: ["oasis"],
+        projects: ["oasis", "finance-decision-council"],
     },
     {
         id: "reliability",
         label: "Reliability engineering",
         detail: "Regression suites, CI, promotion gates, change detection and duplicate quarantine.",
-        projects: ["oasis"],
+        projects: ["oasis", "finance-decision-council"],
     },
     {
         id: "hitl",
@@ -80,7 +80,7 @@ export const capabilities = [
         id: "services",
         label: "Service and API design",
         detail: "FastAPI services over isolated modules, with layer boundaries enforced by tests.",
-        projects: ["oasis"],
+        projects: ["oasis", "finance-decision-council"],
     },
     {
         id: "analytics",
@@ -92,7 +92,7 @@ export const capabilities = [
         id: "modelling",
         label: "Modelling and evaluation",
         detail: "Classification and clustering, read critically: thresholds, overlap, data provenance.",
-        projects: ["churn", "segmentation"],
+        projects: ["churn", "segmentation", "finance-decision-council"],
     },
 ];
 

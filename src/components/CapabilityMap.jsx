@@ -2,7 +2,12 @@ import { useState } from "react";
 import Reveal from "./Reveal";
 import { SectionHead } from "./Tags";
 import { capabilities } from "../data/content";
-import projects, { getProject } from "../data/projects";
+import caseStudyProjects, { linkedProjects } from "../data/projects";
+
+// Case-study projects plus linked projects (no /work/ page), which link to their card on the home page.
+const projects = [...caseStudyProjects, ...linkedProjects];
+const getProject = (slug) => projects.find((p) => p.slug === slug);
+const projectHref = (p) => p.caseStudy ?? `/#${p.slug}`;
 
 const CAP_ROW = 64;
 const HEIGHT = capabilities.length * CAP_ROW;
@@ -63,7 +68,7 @@ function CapabilityMap() {
                             const lit = cap.projects.includes(p.slug);
                             return (
                                 <li key={p.slug} style={{ height: PROJ_ROW }} className={lit ? "is-lit" : ""}>
-                                    <a href={p.caseStudy}>
+                                    <a href={projectHref(p)}>
                                         {p.title}
                                         {lit && <span className="sr-only"> (demonstrates {cap.label})</span>}
                                     </a>
@@ -77,7 +82,7 @@ function CapabilityMap() {
                         {cap.projects.map((slug, i) => (
                             <span key={slug}>
                                 {i > 0 && (i === cap.projects.length - 1 ? " and " : ", ")}
-                                <a href={getProject(slug).caseStudy}>{getProject(slug).title}</a>
+                                <a href={projectHref(getProject(slug))}>{getProject(slug).title}</a>
                             </span>
                         ))}
                         .
@@ -91,7 +96,7 @@ function CapabilityMap() {
                             <p>{c.detail}</p>
                             <p className="caplist-projects">
                                 {c.projects.map((slug) => (
-                                    <a key={slug} className="chip" href={getProject(slug).caseStudy}>
+                                    <a key={slug} className="chip" href={projectHref(getProject(slug))}>
                                         {getProject(slug).title}
                                     </a>
                                 ))}

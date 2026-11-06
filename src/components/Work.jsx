@@ -75,7 +75,13 @@ function Featured() {
 function BenchCard({ p, index }) {
     const visual = VISUALS[p.slug]?.();
     return (
-        <Reveal as="article" className="bench-card panel" delay={(index % 2) * 0.06} aria-labelledby={`card-${p.slug}`}>
+        <Reveal
+            as="article"
+            id={p.caseStudy ? undefined : p.slug}
+            className="bench-card panel"
+            delay={(index % 2) * 0.06}
+            aria-labelledby={`card-${p.slug}`}
+        >
             <p className="card-meta">
                 <StatusTag status={p.status} tone={p.statusTone} />
                 {p.period && <span>{p.period}</span>}
